@@ -2,5 +2,5 @@ scrape_configs:
   - job_name: hetzner_service_discovery
     hetzner_sd_configs:
       - role: "hcloud"
-        bearer_token: "HETZNER_BEARER_TOKEN"
+        bearer_token: "<your Hetzner Cloud API token>"
         port: 9100

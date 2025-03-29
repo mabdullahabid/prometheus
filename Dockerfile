@@ -1,14 +1,8 @@
 FROM prom/prometheus
 
-# Switch to root to modify permissions
-USER root
+# Define a build argument for the Hetzner bearer token
+ARG HETZNER_BEARER_TOKEN
 
-# Add the script to generate prometheus.yml
-COPY generate_config.sh /usr/local/bin/generate_config.sh
-RUN chmod +x /usr/local/bin/generate_config.sh
-
-# Switch back to the default user
-USER nobody
-
-# Set the entrypoint to the script
-ENTRYPOINT ["/usr/local/bin/generate_config.sh"]
+# Copy the prometheus.yml file and replace the token placeholder
+ADD prometheus.yml /etc/prometheus/prometheus.yml
+RUN sed -i "s|HETZNER_BEARER_TOKEN|${HETZNER_BEARER_TOKEN}|g" /etc/prometheus/prometheus.yml

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Default targets if not provided
 DEFAULT_TARGETS="localhost:9100"

@@ -1,8 +1,11 @@
 FROM prom/prometheus
 
-# Define a build argument for the Hetzner bearer token
-ARG HETZNER_BEARER_TOKEN
+# Copy the template and the entrypoint script into the image
+COPY prometheus.yml.template /etc/prometheus/prometheus.yml.template
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
-# Copy the prometheus.yml file and replace the token placeholder
-ADD prometheus.yml /etc/prometheus/prometheus.yml
-RUN sed -i "s|<your Hetzner Cloud API token>|${HETZNER_BEARER_TOKEN}|g" /etc/prometheus/prometheus.yml
+# Set the entrypoint script
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+
+# Optionally, define a default command for Prometheus (if not already defined)
+CMD ["--config.file=/etc/prometheus/prometheus.yml"]

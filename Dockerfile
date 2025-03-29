@@ -4,7 +4,7 @@ FROM prom/prometheus
 USER root
 
 # Add the script to generate prometheus.yml
-ADD generate_config.sh /usr/local/bin/generate_config.sh
+COPY generate_config.sh /usr/local/bin/generate_config.sh
 RUN chmod +x /usr/local/bin/generate_config.sh
 
 # Switch back to the default user

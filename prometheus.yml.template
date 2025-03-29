@@ -1,6 +1,0 @@
-scrape_configs:
-  - job_name: hetzner_service_discovery
-    hetzner_sd_configs:
-      - role: "hcloud"
-        bearer_token: "${HETZNER_BEARER_TOKEN}"
-        port: 9100

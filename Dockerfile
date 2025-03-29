@@ -1,20 +1,13 @@
-# Stage 1: Use an Alpine image to get envsubst
-FROM alpine AS builder
-RUN apk add --no-cache gettext
-
-# Stage 2: Build your final image
 FROM prom/prometheus
 
-# Copy envsubst from the builder stage
-COPY --from=builder /usr/bin/envsubst /usr/local/bin/envsubst
+# Copy the configuration generator script into the image
+COPY generate_config.sh /usr/local/bin/generate_config.sh
 
-# Copy the Prometheus template and entrypoint script
-COPY prometheus.yml.template /etc/prometheus/prometheus.yml.template
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+# Ensure the script is executable (if your Docker supports COPY --chmod, you could do that instead)
+RUN chmod +x /usr/local/bin/generate_config.sh
 
-# Use our custom entrypoint
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+# Set the script as the container entrypoint
+ENTRYPOINT ["/usr/local/bin/generate_config.sh"]
 
-# Use default CMD (as provided by prom/prometheus, or override here)
+# Use default Prometheus command-line options, if any
 CMD ["--config.file=/etc/prometheus/prometheus.yml"]
